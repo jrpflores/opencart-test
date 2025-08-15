@@ -25,6 +25,18 @@ class ControllerExtensionModuleFeatured extends Controller {
 					} else {
 						$image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
 					}
+					//added for image swap
+				
+			$images = $this->model_catalog_product->getProductImages($product_info['product_id']);
+	
+			if(isset($images[0]['image']) && !empty($images)){
+			$images = $images[0]['image']; 
+			}else
+			{
+			$images = $image;
+			}
+						
+		//
 
 					if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 						$price = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
@@ -32,16 +44,14 @@ class ControllerExtensionModuleFeatured extends Controller {
 						$price = false;
 					}
 
-					if (!is_null($product_info['special']) && (float)$product_info['special'] >= 0) {
+					if ((float)$product_info['special']) {
 						$special = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-						$tax_price = (float)$product_info['special'];
 					} else {
 						$special = false;
-						$tax_price = (float)$product_info['price'];
 					}
-		
+
 					if ($this->config->get('config_tax')) {
-						$tax = $this->currency->format($tax_price, $this->session->data['currency']);
+						$tax = $this->currency->format((float)$product_info['special'] ? $product_info['special'] : $product_info['price'], $this->session->data['currency']);
 					} else {
 						$tax = false;
 					}
@@ -61,7 +71,10 @@ class ControllerExtensionModuleFeatured extends Controller {
 						'special'     => $special,
 						'tax'         => $tax,
 						'rating'      => $rating,
-						'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id'])
+						'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id']),
+						'percentsaving' => round((($product_info['price'] - $product_info['special'])/$product_info['price'])*100, 0),
+						'thumb_swap'  => $this->model_tool_image->resize($images , $setting['width'], $setting['height']),
+						'quick'        => $this->url->link('product/quick_view','&product_id=' . $product_info['product_id'])
 					);
 				}
 			}
