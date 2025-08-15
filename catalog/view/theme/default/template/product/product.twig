@@ -280,6 +280,9 @@
               <br/>
               <button type="button" id="button-cart" data-loading-text="{{ text_loading }}" class="btn btn-primary btn-lg btn-block">{{ button_cart }}</button>
             </div>
+            <a href="#" type="button" data-toggle="modal" data-target="#kindleModal">
+                {{text_view_model}}
+            </a>
             {% if minimum > 1 %}
             <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_minimum }}</div>
             {% endif %}</div>
@@ -346,7 +349,65 @@
       {{ content_bottom }}</div>
     {{ column_right }}</div>
 </div>
+<div class="modal fade" id="kindleModal" tabindex="-1" role="dialog" aria-labelledby="kindleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="kindleModalLabel">Find Your Kindle Model</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Enter the first 6 characters of your Kindle's serial number:</p>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search SKU">
+                    <span class="input-group-btn">
+                        <button id="serial-lookup-button" class="btn btn-primary" type="button">OK</button>
+                    </span>
+                </div>
+            </div>
+        </div>
 
+        <table class="table table-bordered mt-4 hide kindle-table">
+          <thead>
+            <tr class="bg-primary text-white">
+              <th>Product</th>
+              <th>SKU number</th>
+              <th>Model</th>
+              <th>Compatible cases</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Kindle Paperwhite (11th generation)</td>
+              <td>G001LG</td>
+              <td>Kindle Paperwhite (11th generation)</td>
+              <td><a href="#">See cases for your Kindle</a></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#serial-lookup-button').on('click', function() {
+        // Get the value from the input field
+        var serialNumber = $('#kindle-serial').val();
+
+        // You can add logic here to check the serial number if you wish
+        // For now, we'll just show the table
+
+        // Show the table by removing the 'hidden' class
+        $('.kindle-table').removeClass('hide');
+    });
+});
+</script>
 <script type="text/javascript"><!--
 $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 	$.ajax({

@@ -1,0 +1,18 @@
+	{% set sliderForbanner = 1 %}
+	{% set	bannercount = banners|length %}
+  <div id="banner{{ module }}" class="{% if bannercount > sliderForbanner %} owl-carousel bannercarousel {% else %} single-banner {% endif %}">
+    <div class="item">
+	{% for banner in banners %}
+      {% if banner.link %}<a href="{{ banner.link }}"><img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" /></a>{% else %}<img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" />{% endif %}
+      {% endfor %}</div>
+	  <!-- If we need pagination -->
+    <div class="swiper-pagination"> </div>
+  </div>
+<script type="text/javascript"><!--
+/*$('#banner{{ module }}').swiper({
+	effect: 'fade',
+	autoplay: 2500,
+    pagination: '.swiper-pagination',  // If we need pagination
+    autoplayDisableOnInteraction: false
+});*/
+--></script> 
